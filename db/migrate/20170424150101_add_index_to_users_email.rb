@@ -4,3 +4,4 @@ class AddIndexToUsersEmail < ActiveRecord::Migration[5.0]
   end
 end
 # add_index :users, :email, unique: true　ユーザーズというテーブルのemailのカラムがユニークになるようにしてね
+# Railsのモデルのuser.rbで防げないのでDB側で防いでね
