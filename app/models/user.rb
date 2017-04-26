@@ -5,6 +5,8 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  has_secure_password
+  validates :password, presence: true, length: { minimum: 6 }
 end
 
 
@@ -18,3 +20,5 @@ end
 #　マキシマム50 最大50文字 nameは50文字以内 emailは255文字以内
 # format: { with: VALID_EMAIL_REGEX }オプション上のVALID_EMAIL_REGEXを指定している
 #case_sensitive 小文字と大文字を区別しない
+# has_secure_passwordがパスワードダイジェストに保存してくれる
+#パスワードを6文字以上にする

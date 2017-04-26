@@ -2,8 +2,9 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
-  def setup #かならず初めに入れる
-    @user = User.new(name: "Example User", email: "user@example.com")
+  def setup
+    @user = User.new(name: "Example User", email: "user@example.com",
+                     password: "foobar", password_confirmation: "foobar")#パスワードなどの欄にはアクセスできるけど保存はされない。保存するときはハッシュ化される
   end
 
   test "should be valid" do
@@ -58,5 +59,16 @@ class UserTest < ActiveSupport::TestCase
     duplicate_user.email = @user.email.upcase  #upcaseは小文字を大文字にする
     @user.save
     assert_not duplicate_user.valid?
+  end
+  
+  test "password should be present (nonblank)" do #パスワードが空白じゃないこと
+    @user.password = @user.password_confirmation = " " * 6 #一番右の値がそれぞれの辺（passwordとpassword_confirmation）に代入される
+    assert_not @user.valid?
+  end
+
+
+  test "password should have a minimum length" do   #パスワードを長めに設定させるため
+    @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?
   end
 end
