@@ -7,8 +7,23 @@ class UsersController < ApplicationController
 #showアクションは　app/views/users/show.html.erbを呼び出す
 
   def new
+    @user = User.new #空のインスタンスをまず作成する
   end
   
+  def create
+    @user = User.new(user_params)
+    if @user.save
+      #success
+    else
+      #failure
+    render 'new'
+    end
+  end
+  
+  def user_params
+      params.require(:user).permit(:name, :email, :password,
+                                   :password_confirmation)
+  end
 end
 
 #signupのページ

@@ -6,8 +6,11 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, 
+                        length: { minimum: 6 },
+                        allow_nil:true
 end
+
 
 
 #アプリケーションレコードを継承しているUserクラス。ただのUserクラスではない
@@ -22,3 +25,4 @@ end
 #case_sensitive 小文字と大文字を区別しない
 # has_secure_passwordがパスワードダイジェストに保存してくれる
 #パスワードを6文字以上にする
+#allow_nil:trueはパスワードのエラーが二回出てしまう時の回避対応
