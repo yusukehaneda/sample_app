@@ -3,9 +3,18 @@
   <aside class="col-md-4">
     <section class="user_info">
       <h1>
-        <%= gravatar_for @user %><!--gravatarというサービスを使うメソッド--!>
+        <%= gravatar_for @user %>
         <%= @user.name %>
       </h1>
     </section>
   </aside>
 </div>
+
+<!--gravatar forというメソッドは標準ではない。gravatarというサービスを使うメソッド。メールアドレスを
+簡易化・小文字化して散らしてくれる。リスト7.9
+users_helperに定義する
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+これらはBootstrapのメソッド--!>
+<!--%だけの場合はただ評価するだけ。その戻り値は何もない（Viewには一切出さない）　%=だと戻り値を画面に出す-->

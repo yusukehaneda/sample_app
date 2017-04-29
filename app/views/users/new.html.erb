@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user) do |f| %> <!--form_forhはブロック付きメソッド。引数は@user-->
+    <%= form_for(@user) do |f| %> <!--form_forhはブロック付きメソッド。引数は@user |f|は引数でformの略-->
           <%= render 'shared/error_messages' %> <!--パーシャル化しておく（再利用できるから）-->
     
       <%= f.label :name %>
@@ -19,6 +19,7 @@
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
       <%= f.submit "Create my account", class: "btn btn-primary" %>
+      <!--次のアクションにバトンを渡す btn-->
     <% end %>
   </div>
 </div>
