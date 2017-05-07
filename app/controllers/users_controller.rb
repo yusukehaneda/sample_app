@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 # debugger
 
   def new
-    @user = User.new #空のインスタンスをまず作成する
+    @user = User.new #空のインスタンスをまず作成し、インスタンス変数@userに代入
   end
   
   def create
@@ -29,12 +29,29 @@ class UsersController < ApplicationController
     else
       render 'new'
       #failure
-      #newテンプレートをレンダリングする。つまり、その中身が何であれ、signアップフォームに戻す
+      #newテンプレートをレンダリングする（上のdef newメソッドのアクションを行う）。つまり、その中身が何であれ、signアップフォームに戻す
     end
   end
   
+  def edit
+    @user = User.find(params[:id])
+  end
+  
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      flash[:success] = "Profile updated"
+      redirect_to @user
+      # 更新に成功した場合を扱う。
+    else
+      render 'edit'
+    #editテンプレートをレンダリングする（上のdef editメソッドのアクションを行う）。
+    end
+  end
+
+  
   private
-    def user_params #def createの子メソッド
+    def user_params #def create,edit,updateの子メソッド
       params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation)
     end
