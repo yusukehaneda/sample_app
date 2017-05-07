@@ -9,7 +9,8 @@ class SessionsController < ApplicationController
     # if user.nil? && user.authenticate(params[:session][:password])と同じ意味
       #success
       log_in user
-      redirect_to user
+      #9章 params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      redirect_back_or user
     else
       #false
       flash.now[:danger] = 'Invalid email/password combination' # 本当は正しくない
