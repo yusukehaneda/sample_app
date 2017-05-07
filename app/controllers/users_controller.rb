@@ -21,6 +21,7 @@ class UsersController < ApplicationController
     # @user = User.new(params[:user])とするとadminとかで登録できてしまう。マスアサイメント脆弱性
     if @user.save
       #success
+      log_in @user
       flash[:success] = "Welcome to the Sample App!" #flashというメソッド（変数）は一度だけ出して、二度目は消す
         redirect_to @user
         #userのプロフィールページに飛ぶ redirect_to user_path(@user.id)の省略形
