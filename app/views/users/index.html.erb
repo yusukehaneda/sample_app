@@ -1,0 +1,15 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<%= will_paginate %>
+<!--Usersリソースの中のビューを読み込んでいる。～paginate @users%>-->
+
+<ul class="users">
+  <%= render @users %>
+  <!--<% @users.each do |user| %>-->
+  <!--<%= render user %>-->
+  <!--app/views/users/_user.html.erbを呼び出す埋め込みruby-->
+  <% end %>
+</ul>
+
+<%= will_paginate %>

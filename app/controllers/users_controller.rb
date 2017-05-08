@@ -1,11 +1,16 @@
 class UsersController < ApplicationController
-    before_action :logged_in_user, only: [:edit, :update]
+    before_action :logged_in_user, only: [:index, :edit, :update]
     before_action :correct_user,   only: [:edit, :update]
 
     # :logged_in_userはメソッド名。ここでは、文字列でなく、シンボル:を与えて表記するとわかりやすい
     # edit updateのメソッドでのみ有効
     # before_action :correct_user,   only: [:edit, :update]はログイン済みが前提（順序を正しく！）
-
+  
+  def index
+    # @users = User.all
+    @users = User.paginate(page: params[:page])
+  end
+  
   def show
     @user = User.find(params[:id]) 
   end
