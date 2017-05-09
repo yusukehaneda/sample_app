@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
-    # if user.nil? && user.authenticate(params[:session][:password])と同じ意味
+    # ここではuserはローカル変数を使う。if !user.nil? && user.authenticate(params[:session][:password])と同じ意味
       #success
       log_in user
       #9章 params[:session][:remember_me] == '1' ? remember(user) : forget(user)
@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
     else
       #false
       flash.now[:danger] = 'Invalid email/password combination' # 本当は正しくない
-      render 'new'    #sessions_controller内のnew actionに対応するnewテンプレートが呼び出される
+      render 'new'    #sessions_controller内のnew action（def new）に対応するnewテンプレートが呼び出される(new.htmlにとぶ)
     end
   end
 
