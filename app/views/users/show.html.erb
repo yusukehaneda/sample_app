@@ -1,14 +1,26 @@
 <% provide(:title, @user.name) %>
-<div class="row">
-  <aside class="col-md-4">
-    <section class="user_info">
-      <h1>
-        <%= gravatar_for @user %>
-        <%= @user.name %>
-      </h1>
-    </section>
-  </aside>
+  <div class="row">
+    <aside class="col-md-4">
+      <section class="user_info">
+        <h1>
+          <%= gravatar_for @user %>
+          <%= @user.name %>
+        </h1>
+      </section>
+    </aside>
+    
+  <div class="col-md-8">
+    <% if @user.microposts.any? %>
+      <h3>Microposts (<%= @user.microposts.count %>)</h3>
+      <ol class="microposts">
+        <%= render @microposts %>
+      </ol>
+      <%= will_paginate @microposts %>
+      <!--will pagenateの引数に@micropostsを入れないとmicropostsと紐づかない-->
+    <% end %>
+  </div>
 </div>
+
 
 <!--gravatar forというメソッドは標準ではない。gravatarというサービスを使うメソッド。メールアドレスを
 簡易化・小文字化して散らしてくれる。リスト7.9

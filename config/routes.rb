@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   delete  '/logout',   to: 'sessions#destroy'   #セッション8章
   resources :users
   # =>/users/1 /user/2  というようなページをルーティングする
+  resources :microposts,          only: [:create, :destroy]
 end
 
 
