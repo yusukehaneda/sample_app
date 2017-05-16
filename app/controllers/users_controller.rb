@@ -13,9 +13,10 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.find(params[:id]) 
+    @user = User.find(params[:id])
     @microposts = @user.microposts.paginate(page: params[:page])
   end
+
 
 #def showはshouwアクションのこと。これは　app/views/users/show.html.erbを呼び出す
 #URLのidと同じデータを引っ張る（user/2というURLにしたらid=2のユーザを引っ張る）
@@ -77,14 +78,15 @@ class UsersController < ApplicationController
     
     # beforeアクション
     # ログイン済みユーザーかどうか確認
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-        # => SessionsController#newが割り込む
-      end
-    end
+    # Application Controllerに書いたので不要
+    # def logged_in_user
+    #   unless logged_in?
+    #     store_location
+    #     flash[:danger] = "Please log in."
+    #     redirect_to login_url
+    #     # => SessionsController#newが割り込む
+    #   end
+    # end
     
     # 正しいユーザーかどうか確認　（割り込み処理）
     def correct_user
