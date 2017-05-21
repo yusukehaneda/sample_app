@@ -7,9 +7,19 @@ Rails.application.routes.draw do
   get     '/login',    to: 'sessions#new'       #セッション8章
   post    '/login',    to: 'sessions#create'    #セッション8章
   delete  '/logout',   to: 'sessions#destroy'   #セッション8章
-  resources :users
+  
+  # resources :users
   # =>/users/1 /user/2  というようなページをルーティングする
+  resources :users do
+      # /users/:id/following
+      # /users/:id/followers
+    member do
+      get :following, :followers
+    end
+  end
+  
   resources :microposts,          only: [:create, :destroy]
+  resources :relationships,       only: [:create, :destroy]
 end
 
 
