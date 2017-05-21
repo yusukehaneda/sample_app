@@ -1,0 +1,10 @@
+<!--フォローする/解除のボタン群のパーシャル-->
+<% unless current_user?(@user) %>  <!--自分のページではなければ-->
+  <div id="follow_form">
+  <% if current_user.following?(@user) %>
+    <%= render 'unfollow' %>
+  <% else %>
+    <%= render 'follow' %>
+  <% end %>
+  </div>
+<% end %>
