@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     # ここではuserはローカル変数を使う。if !user.nil? && user.authenticate(params[:session][:password])と同じ意味
       #success
       log_in user
-      #9章 params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user) #チェックボックスにチェック入れれば1になる。いれなければforgetする
       redirect_back_or user
     else
       #false
@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    log_out
+    log_out if logged_in?
     redirect_to root_url
   end
   
