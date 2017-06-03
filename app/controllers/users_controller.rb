@@ -35,10 +35,15 @@ class UsersController < ApplicationController
     #こうするとすべてのuser属性が当てはまっていく。一行で済む
     # @user = User.new(params[:user])とするとadminとかで登録できてしまう。マスアサイメント脆弱性
     if @user.save
+      @user.send_activation_email
+      # UserMailer.account_activation(@user).deliver_now
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_url
+      
       #success
-      log_in @user
-      flash[:success] = "Welcome to the Sample App!" #flashというメソッド（変数）は一度だけ出して、二度目は消す
-        redirect_to @user
+      #log_in @user
+      #flash[:success] = "Welcome to the Sample App!" #flashというメソッド（変数）は一度だけ出して、二度目は消す
+      #redirect_to @user
         #userのプロフィールページに飛ぶ redirect_to user_path(@user.id)の省略形
         #GET / users/:idという処理が行われる
     else

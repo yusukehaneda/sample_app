@@ -1,5 +1,9 @@
 class User < ApplicationRecord
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :activation_token
+#  before_save { self.email = self.email.downcase }
+  before_save   :downcase_email
+  before_create :create_activation_digest
+  
   has_many :microposts, dependent: :destroy  #userとmicropostとの関連付け
   has_many :active_relationships,   class_name: "Relationship",
                                     foreign_key: "follower_id",
@@ -15,8 +19,6 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships,  source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
     
-    
-  before_save { self.email = self.email.downcase }
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
@@ -45,19 +47,17 @@ class User < ApplicationRecord
   end
   
   # 渡されたトークンがダイジェストと一致したらtrueを返す
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
   end
-  
     # ユーザーのログイン情報を破棄する
   def forget
     update_attribute(:remember_digest, nil)
   end
 
   
-  # 試作feedの定義
-  # 完全な実装は次章の「ユーザーをフォローする」を参照
   def feed
     # Micropost.where("user_id = ?", self.following_ids,self.id)
     # Micropost.where("user_id IN (:following_ids) OR user_id = :user_id",
@@ -67,6 +67,17 @@ class User < ApplicationRecord
                      WHERE follower_id = :user_id"
     Micropost.where("user_id IN (#{following_ids})
                      OR user_id = :user_id", user_id: self.id)
+  end
+  
+    # アカウントを有効にする
+  def activate
+    update_attribute(:activated,    true)
+    update_attribute(:activated_at, Time.zone.now)
+  end
+
+  # 有効化用のメールを送信する
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
   end
   
     # ユーザーをフォローする
@@ -83,6 +94,20 @@ class User < ApplicationRecord
   def following?(other_user)
     following.include?(other_user)
   end
+  
+  private
+
+    # メールアドレスをすべて小文字にする
+    def downcase_email
+      self.email = email.downcase
+    end
+
+    # 有効化トークンとダイジェストを作成および代入する
+    #このケースでは、ユーザーをcreateする前に実行する
+    def create_activation_digest
+      self.activation_token  = User.new_token #鍵を生成して、一時的にactivation_tokenに保存
+      self.activation_digest = User.digest(activation_token) #digestクラスメソッドを使って、ハッシュ化したものをDBのactivation_digestカラムに入れる
+    end
 
 end
 
