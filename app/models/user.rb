@@ -10,7 +10,7 @@ class User < ApplicationRecord
                                     dependent:   :destroy 
                                     #ユーザが消えたらrelationshipも消えるようにする（相手方のフォロワー数が減る
   
-  # =>ActiveRelationshipというテーブルがあるのか勘違いしないようにクラスを定義する
+  # =>ActiveRelationshipというテーブルがあるのか勘違いしないようにクラスを定義する。
   # User_idを探しに行かないようにforeign_keyを設定する
   
   has_many :passive_relationships, class_name:  "Relationship",
